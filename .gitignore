@@ -1,0 +1,28 @@
+# Virtual environments
+venv/
+env/
+python-3.6-venv/
+playwright-venv/
+.env
+.venv
+ENV/
+
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Test results and artifacts
+test-results/
+*.log
+
+# IDE specific files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS specific files
+.DS_Store
+Thumbs.db 

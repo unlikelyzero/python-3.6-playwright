@@ -1,0 +1,50 @@
+services:
+
+  playwright:
+    image: mcr.microsoft.com/playwright:v1.49.1-jammy
+    container_name: playwright
+    ports:
+      - "3000:3000"
+    command: >
+      /bin/bash -c "
+        npm install -g playwright@1.49.1 &&
+        npx playwright run-server --port 3000 --host 0.0.0.0
+      "
+    environment:
+      - PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
+    volumes:
+      - playwright-cache:/ms-playwright
+
+  test-runner:
+    image: python:3.9.21-slim
+    container_name: test-runner
+    depends_on:
+      - playwright
+    volumes:
+      - .:/app
+      - test-cache:/app/.pytest_cache
+      - ./test-results:/app/test-results
+    working_dir: /app
+    environment:
+      - PLAYWRIGHT_WS_ENDPOINT=ws://playwright:3000
+    command: >
+      /bin/bash -c "
+        export PLAYWRIGHT_WS_ENDPOINT=ws://playwright:3000 &&
+        apt-get update && 
+        apt-get install -y make python3-venv python3-dev build-essential && 
+        python -m venv --clear playwright-venv &&
+        . playwright-venv/bin/activate &&
+        pip install --upgrade pip &&
+        pip install -r requirements-playwright.txt &&
+        playwright install chromium &&
+        python -m venv --clear python-3.6-venv &&
+        . python-3.6-venv/bin/activate &&
+        pip install --upgrade pip &&
+        pip install -r requirements.txt &&
+        export PLAYWRIGHT_WS_ENDPOINT=ws://playwright:3000 &&
+        make test-remote
+      "
+
+volumes:
+  playwright-cache:
+  test-cache: 
