@@ -35,8 +35,11 @@ flowchart TB
 flowchart TB
  subgraph subGraph0["Host Machine"]
         A["Python 3.9 Venv<br>pytest"]
-        D(("Playwright Browser"))
         B["Python 3.6 Venv"]
+  end
+ subgraph subGraph1["Docker Container"]
+        D(("Playwright Browser"))
+        E["Playwright Server"]
   end
  subgraph s1["Target website"]
         C["crowdstrike.com"]
@@ -44,15 +47,19 @@ flowchart TB
     A -- subprocess --> B
     B -- requests --> C
     B -- diagnostic info --> A
-    A -- playwright --> D
+    A -- websocket --> E
+    E -- controls --> D
     D -- test execution --> C
+
     A@{ shape: rounded}
     B@{ shape: rounded}
     C@{ shape: card}
+    E@{ shape: hexagon}
     style A fill:#f9f,stroke:#333,stroke-width:2px
     style D fill:#fdb,stroke:#333,stroke-width:2px
     style B fill:#bbf,stroke:#333,stroke-width:2px
     style C fill:#dfd,stroke:#333,stroke-width:2px
+    style E fill:#fdb,stroke:#333,stroke-width:2px
 ```
 
 ## Requirements
