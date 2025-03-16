@@ -1,8 +1,8 @@
 # Python 3.6 with Playwright Tests
 
-This project demonstrates running Playwright tests (requiring Python 3.9) alongside Python 3.6 tests using subprocess in a containerized environment.
+This project demonstrates running Playwright tests (requiring Python 3.9) alongside Python 3.6 tests using subprocess in a containerized environment. The ultimate goal is to be establish pattern for a stable and modern pytest execution environment which is capable of running playwright alongside a virtualenv environment which is running an older version of python.
 
-## Test Execution Flow
+## Test Execution Flow Diagram
 
 ### Local Test Execution
 ```mermaid
